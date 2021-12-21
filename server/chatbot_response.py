@@ -18,11 +18,11 @@ classes = pickle.load( open( "pkl/classes.pkl", "rb" ) )
 with open('data/intents.json', 'r', encoding='utf-8') as json_data:
 	intents = json.load(json_data)
 
-# with open('data/dishes_data.json', 'r', encoding='utf-8') as json_data:
-#     database = json.load(json_data)
+with open('data/dishes_data.json', 'r', encoding='utf-8') as json_data:
+    database = json.load(json_data)
 
 model = tf.keras.models.load_model('pkl/model.h5')
-# model.summary()
+model.summary()
 
 vectorizer = pickle.load(open("pkl/tfidf_vectorizer.pkl", "rb"))
 
@@ -46,5 +46,5 @@ if __name__ == '__main__':
 		tag, _ = classify(x)
 		print('Bot: ', response(tag))
 
-		# tag, conf = classify(x)
-		# print('Bot: ', tag, conf)
+		tag, conf = classify(x)
+		print('Bot: ', tag, conf)

@@ -1,0 +1,54 @@
+{"intents": 
+	[
+        {"tag": "greeting",
+         "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
+         "responses": ["Hello, thanks for visiting", "Good to see you again", "Hi there, how can I help?"],
+         "context_set": ""
+        },
+        {"tag": "goodbye",
+         "patterns": ["Bye", "See you later", "Goodbye"],
+         "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
+        },
+        {"tag": "complain",
+         "patterns": ["have a complaint", "I want to raise a complaint", "There is a complaint about a service"],
+         "responses": ["Please provide us your complaint in order to assist you", "Please mention your complaint, we will reach you and sorry for any inconvenience caused"]
+        },
+		{"tag": "thanks",
+         "patterns": ["Thanks", "Thank you", "That's helpful"],
+         "responses": ["Happy to help!", "Any time!", "My pleasure"]
+        },
+		{"tag": "sorry",
+         "patterns": ["Why are you so stupid", "Can't you understand", "That's not helpful"],
+         "responses": ["Sorry, can't understand you", "Please give me more info", "Not sure I understand"]
+        },
+		{"tag": "ask_drink",
+         "patterns": ["What do you have?", "I want to see menu", "menu, please"],
+         "responses": ["Here is a menu"]
+        },
+		{"tag": "order",
+         "patterns": ["I want to order", "Please set an order", "order please"],
+         "responses": ["Ok", "fine", "What you want?"]
+        },
+		{"tag": "ask_coupon",
+         "patterns": ["Do you have discount", "What about discount", "Let me see discount list"],
+         "responses": ["Here is the discount"]
+        },
+		{"tag": "payments",
+         "patterns": ["Do you take credit cards?", "Do you accept Mastercard?", "Are you cash only?" ],
+         "responses": ["We accept VISA, Mastercard and AMEX", "We accept most major credit cards"],
+		 "context_set": ""
+        },
+		{"tag": "ask_owner",
+         "patterns": ["What is your name", "What should I call you", "Whats your name?" ],
+         "responses": ["You can call me Bot", "I'm a Bot!", "Just call me as Bot"]
+        },
+        {"tag": "hours",
+         "patterns": ["What hours are you open?", "What are your hours?", "When are you open?" ],
+         "responses": ["We're open every day 9am-9pm", "Our hours are 9am-9pm every day"]
+        },
+        {"tag": "opentoday",
+         "patterns": ["Are you open today?", "When do you open today?", "What are your hours today?"],
+         "responses": ["We're open every day from 9am-9pm", "Our hours are 9am-9pm every day"]
+        }
+	]
+}
