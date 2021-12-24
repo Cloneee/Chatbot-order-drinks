@@ -11,9 +11,6 @@ GRAPH_URL = "https://graph.facebook.com/v7.0"
 PAGE_TOKEN = "EAAGfTgtZBnsIBAE1M0jL4pp56ZABxGFbkR7j4PtiknNiCWyjiZAz3ZBdyrrYHjvaw4BWkSZBNmTgROaQrUo788CxnDSWt49IqcSX5ZCEJ9ZBPLnUe1zTcvu6dCwXhpXG5MOg1yxZAXxCNo9EIEZCYlUw4xdRTxxWOHplZBmZAMjH4an9YLaC3SfppkMofPGllMm27o5lCK7HxGJAwZDZD"
 img_response_links = ["https://i.pinimg.com/originals/6e/24/db/6e24db7e8d4d98939d65081fc50259ca.jpg"]
 
-with open("data/rat_20_05_2020.json", "r", encoding="utf-8") as json_data:
-    rat = json.load(json_data)
-
 with open("data/dishes_data.json", "r", encoding="utf-8") as json_data:
     database = json.load(json_data)
 
@@ -35,18 +32,8 @@ def send_to_messenger(ctx):
 
 
 def get_location(str):
-    max_ratio = 0
-    cand = None
-    for hash_code, values in rat.items():
-        for raw_address in values["raw_address"]:
-            ratio = fuzz.token_sort_ratio(raw_address.lower(), str.lower())
-            if ratio > max_ratio:
-                max_ratio = ratio
-                cand = values
-                print(ratio)
-                print(raw_address)
-    if max_ratio > 70:
-        return cand
+    if (str.length > 0):
+         return str
     return None
 
 

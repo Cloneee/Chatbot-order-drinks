@@ -1,54 +1,54 @@
 {"intents": 
 	[
         {"tag": "greeting",
-         "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
-         "responses": ["Hello, thanks for visiting", "Good to see you again", "Hi there, how can I help?"],
+         "patterns": ["Hi", "Chào bạn", "Hélu", "Hello", "Xin chào", "Bạn ơi", "Bạn gì ơi"],
+         "responses": ["Chào bạn", "Rất vui được gặp bạn", "Tôi có thể giúp gì cho bạn?", "Xin chào", "Bonjour!"],
          "context_set": ""
         },
         {"tag": "goodbye",
-         "patterns": ["Bye", "See you later", "Goodbye"],
-         "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
+         "patterns": ["Bye", "Bye bạn", "Tạm biệt", "Thế thôi", "Thế nhé", "Chào bạn", "PP", "Bái bai"],
+         "responses": ["Tạm biệt và hẹn gặp lại nha", "Chúc bạn có một ngày tốt lành", "Chào bạn"]
         },
         {"tag": "complain",
-         "patterns": ["have a complaint", "I want to raise a complaint", "There is a complaint about a service"],
-         "responses": ["Please provide us your complaint in order to assist you", "Please mention your complaint, we will reach you and sorry for any inconvenience caused"]
+         "patterns": ["muốn khiếu nại", "muốn tố cáo", "tệ hại", "tệ quá", "dịch vụ quá kém", "hỗ trợ quá kém", "gian thương", "làm ăn bất nhất", "cho gặp chủ quán", "cho gặp admin", "gặp chủ", "gặp sếp", "gặp quản lý", "gặp ad"],
+         "responses": ["Xin bạn hãy cung cấp thông tin để chúng tôi có thể ghi lại và hỗ trợ tốt hơn cho lần sau", "Vui lòng đề cập chi tiết khiếu nại của bạn, chúng tôi sẽ liên hệ lại với bạn sau và xin lỗi vì sự bất tiện này"]
         },
 		{"tag": "thanks",
-         "patterns": ["Thanks", "Thank you", "That's helpful"],
-         "responses": ["Happy to help!", "Any time!", "My pleasure"]
+         "patterns": ["cảm ơn", "cảm nhơn", "tốt lắm", "thank kiều", "hihi", "thanks", "thank you"],
+         "responses": ["Cảm ơn bạn", "Phục vụ bạn là vinh hạnh của chúng tôi!"]
         },
 		{"tag": "sorry",
-         "patterns": ["Why are you so stupid", "Can't you understand", "That's not helpful"],
-         "responses": ["Sorry, can't understand you", "Please give me more info", "Not sure I understand"]
+         "patterns": ["ngu quá", "không hiểu", "không giúp", "không có ích", "vô ích", "vô dụng"],
+         "responses": ["Xin lỗi, tôi không hiểu ý bạn", "Vui lòng cho tôi thêm thông tin", "Tôi không chắc bạn đang nói gì", "Bạn có thể nói rõ hơn không?"]
         },
 		{"tag": "ask_drink",
-         "patterns": ["What do you have?", "I want to see menu", "menu, please"],
-         "responses": ["Here is a menu"]
+         "patterns": ["có gì", "menu", "menu, please", "sản phẩm", "trà sữa", "bán gì", "thực đơn", "cho xem"],
+         "responses": ["Menu đây bạn"]
         },
 		{"tag": "order",
-         "patterns": ["I want to order", "Please set an order", "order please"],
-         "responses": ["Ok", "fine", "What you want?"]
+         "patterns": ["đặt hàng", "đặt trà sữa", "cho đặt hàng", "order", "order please"],
+         "responses": ["Ok, hiểu rồi", "Bạn muốn gì?", "Bạn cần gì?"]
         },
 		{"tag": "ask_coupon",
-         "patterns": ["Do you have discount", "What about discount", "Let me see discount list"],
-         "responses": ["Here is the discount"]
+         "patterns": ["giảm giá", "khuyến mãi", "danh sách hàng đang giảm", "discount", "coupon"],
+         "responses": ["Tiếc quá hiện tại bên mình không có giảm giá bạn à"]
         },
-		{"tag": "payments",
-         "patterns": ["Do you take credit cards?", "Do you accept Mastercard?", "Are you cash only?" ],
-         "responses": ["We accept VISA, Mastercard and AMEX", "We accept most major credit cards"],
+		{"tag": "payment",
+         "patterns": ["tính tiền", "thanh toán", "chốt đơn", "Tính tiền cho mình với"],
+         "responses": ["Chúng tôi nhận tiền trực tiếp khi giao hàng"],
 		 "context_set": ""
         },
 		{"tag": "ask_owner",
-         "patterns": ["What is your name", "What should I call you", "Whats your name?" ],
-         "responses": ["You can call me Bot", "I'm a Bot!", "Just call me as Bot"]
+         "patterns": ["tên gì", "nên gọi thế nào", "là ai", "là gì", "là cái gì", "tên bạn là", "what your name", "name", "who are you", "what are you", "bạn có tên không"],
+         "responses": ["Bạn có thể gọi tôi là Bắp!", "Tôi tên Bắp", "Cứ gọi tôi là Bắp!"]
         },
         {"tag": "hours",
-         "patterns": ["What hours are you open?", "What are your hours?", "When are you open?" ],
-         "responses": ["We're open every day 9am-9pm", "Our hours are 9am-9pm every day"]
+         "patterns": ["mở cửa mấy giờ", "mở khi nào", "bán lúc mấy giờ", "rảnh mấy giờ", "giao khi nào", "bán bao giờ", "có mở", "mở bao giờ"],
+         "responses": ["Quán mở cửa từ 9 giờ sáng đến 9 giờ tối, từ thứ 2 đến thứ 7 hằng tuần"]
         },
         {"tag": "opentoday",
-         "patterns": ["Are you open today?", "When do you open today?", "What are your hours today?"],
-         "responses": ["We're open every day from 9am-9pm", "Our hours are 9am-9pm every day"]
+         "patterns": ["nay có mở", "có đang mở", "hôm nay mấy giờ"],
+         "responses": ["Quán mở cửa từ 9 giờ sáng đến 9 giờ tối, từ thứ 2 đến thứ 7 hằng tuần"]
         }
 	]
 }

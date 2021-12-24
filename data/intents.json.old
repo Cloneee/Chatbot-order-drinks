@@ -1,0 +1,54 @@
+{"intents": 
+	[
+        {"tag": "greeting",
+         "patterns": ["Hi", "Hello", "Chào", "Xin chào"],
+         "responses": ["Côngcha xin chào!", "Gặp lại cậu rồi nè", "Côngcha hân hạnh được phục vụ?"],
+         "context_set": ""
+        },
+        {"tag": "goodbye",
+         "patterns": ["Bye", "Goodbye", "Tạm biệt", "Bái bai", "Kết thúc", "Ngừng", "Nín"],
+         "responses": ["Hẹn gặp lại quý khách", "Chúc cậu một ngày tốt lành", "Gặp lại sau nha!"]
+        },
+        {"tag": "complain",
+         "patterns": ["Tôi muốn phàn nàn", "Chất lượng quá tệ", "Dịch vụ quá tệ", "Không chấp nhận được", "Dở", "Không ngon"],
+         "responses": ["Thành thật xin lỗi quý khách, cảm phiền quý khách nói thêm về những bất cập quý khách gặp phải ạ"]
+        },
+		{"tag": "thanks",
+         "patterns": ["Thanks", "Thank you", "Cảm ơn nha", "Cảm ơn", "Xịn"],
+         "responses": ["Rất vui vì đã giúp được cậu!", "Không có chi!"]
+        },
+		{"tag": "sorry",
+         "patterns": ["Why are you so stupid", "Can't you understand", "That's not helpful"],
+         "responses": ["Xin lỗi mình không hiểu yêu cầu", "Xin lỗi mình không hiểu lắm", "Cậu nói thêm được không, mình không hiểu"]
+        },
+		{"tag": "ask_drink",
+         "patterns": ["Menu", "Menu là gì", "Quán mình có gì", "Có những loại nước gì", "Có loại trà sữa gì", "Có cà phê không"],
+         "responses": ["Menu đây ạ"]
+        },
+		{"tag": "order",
+         "patterns": ["Order", "Order nha", "Order đi", "Order đê", "Gọi nước", "Gọi trà sữa nha"],
+         "responses": ["Ok luôn", "Đợi mình lấy giấy", "Cậu muốn gì nào?"]
+        },
+		{"tag": "ask_coupon",
+         "patterns": ["Có giảm giá không", "Giảm giá", "Xin coupon giảm giá", "Coupon giảm giá"],
+         "responses": ["Quán đang khuyến mãi mua 1 tặng 2 tính tiền 3 nha cậu"]
+        },
+		{"tag": "payments",
+         "patterns": ["Tiền mặt hay thẻ?", "Có nhận Mastercard không?", "Có nhận Visa không?", "Có nhận momo không", "Có nhận tiền mặt không", "Thanh toán bằng cách nào", "Làm sao để thanh toán" ],
+         "responses": ["Bên mình chấp nhận VISA, Mastercard, Momo với tiền mặt luôn nha", "Thanh toán kiểu gì cũng được hết á"],
+		 "context_set": ""
+        },
+		{"tag": "ask_owner",
+         "patterns": ["Tên cậu là gì", "Cậu tên gì", "Mình gọi cậu là gì?" ],
+         "responses": ["Mình là Chatbot thông minh", "Mình là bot thôi à!", "Gọi mình là Bot cũng được"]
+        },
+        {"tag": "hours",
+         "patterns": ["Quán mấy giờ mở cửa?", "Mấy giờ quán mở cửa?", "Mấy giờ quán đóng cửa?" ],
+         "responses": ["Quán mình mở từ 9h sáng đến 10h tối mỗi ngày nha!", "Tầm 9h sáng tới 10h tối luôn!"]
+        },
+        {"tag": "opentoday",
+         "patterns": ["Hôm nay có mở cửa không?", "Hôm nay có đóng cửa không?", "Hôm nay mấy giờ mở cửa?"],
+         "responses": ["Tụi mình bán xuyên lễ xuyên Tết, mỗi ngày từ 9h sáng tới 10h tối nha", "Quán mở cửa từ 9h sáng tới 10h tối, không nghỉ bữa nào luôn"]
+        }
+	]
+}
