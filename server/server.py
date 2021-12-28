@@ -6,11 +6,18 @@ from bottle import debug, request, route, run
 import random
 from fuzzywuzzy import fuzz
 import chatbot_response as cr
+from pymongo import MongoClient
 
+myclient = MongoClient("mongodb://localhost:27017/")
+mydb = myclient["chatbot"]
+mycol = mydb["order"]
+
+# Setup facebook API
 GRAPH_URL = "https://graph.facebook.com/v7.0"
 PAGE_TOKEN = "EAAGfTgtZBnsIBAE1M0jL4pp56ZABxGFbkR7j4PtiknNiCWyjiZAz3ZBdyrrYHjvaw4BWkSZBNmTgROaQrUo788CxnDSWt49IqcSX5ZCEJ9ZBPLnUe1zTcvu6dCwXhpXG5MOg1yxZAXxCNo9EIEZCYlUw4xdRTxxWOHplZBmZAMjH4an9YLaC3SfppkMofPGllMm27o5lCK7HxGJAwZDZD"
 img_response_links = ["https://i.pinimg.com/originals/6e/24/db/6e24db7e8d4d98939d65081fc50259ca.jpg"]
 
+# Load dishes data
 with open("data/dishes_data.json", "r", encoding="utf-8") as json_data:
     database = json.load(json_data)
 
@@ -19,6 +26,7 @@ for values in database.values():
     for value in values:
         drink_topping[value["name"]] = value["customs"]
 
+# Setup user info
 status_code = -1
 user_info = {}
 user_info['drink'] = []
@@ -30,12 +38,11 @@ def send_to_messenger(ctx):
     url = "{0}/me/messages?access_token={1}".format(GRAPH_URL, PAGE_TOKEN)
     response = requests.post(url, json=ctx)
 
-
-def get_location(str):
-    if (str.length > 0):
-         return str
-    return None
-
+# def get_location(str):
+#     print("Str: " + str)
+# 	if (str != ""):
+# 		return str
+# 	return None
 
 def create_all_drink_elements():
     all_drink_list = []
@@ -120,18 +127,15 @@ def bot_endpoint():
     else:
         global status_code
         global user_info
-
         body = json.loads(request.body.read())
         user_id = body["entry"][0]["messaging"][0]["sender"]["id"]
         page_id = body["entry"][0]["id"]
-        # pprint(body)
         ctx = {}
         if user_id != page_id:
             ctx["recipient"] = {"id": user_id}
 
         if "message" in body["entry"][0]["messaging"][0]:
             message = body["entry"][0]["messaging"][0]["message"]
-
             # sticker, image, gif
             if "attachments" in message:
                 new_dict = {}
@@ -144,7 +148,7 @@ def bot_endpoint():
                 text = message["text"]
                 if status_code == -1:
                     tag, _ = cr.classify(text)
-
+                    
                     if tag != "ask_drink" and tag != "order" and tag != "coupon" and tag != "payment":
                         ctx["message"] = {"text": cr.response(tag)}
                     elif tag == "coupon":
@@ -171,17 +175,17 @@ def bot_endpoint():
                 else:
                     if status_code == 0:
                         try:
-                            phone = message['nlp']['entities']['phone_number'][0]['value']
+                            phone = message['nlp']['entities']['wit$phone_number:phone_number'][0]['value']
                             user_info['phone'] = phone
                             status_code += 1
                             ctx["message"] = {
                                 "text": "OK Mình đã ghi nhận số điện thoại của bạn. Tiếp theo cho mình xin thời gian bạn muốn nhận đồ nhé. (Ví dụ: 3 giờ chiều, 15:00,...)"}
                         except KeyError:
                             ctx["message"] = {
-                                "text": "Mình không thể nhận ra số điện thoại của bạn. Nhập lại giúp mình nhé"}
+                                "text": "Số điện thoại của bạn là: (Ví dụ: 0902210496, +84902210496,...)"}
                     elif status_code == 1:
                         try:
-                            datetime = message['nlp']['entities']['datetime'][0]['value']
+                            datetime = message['nlp']['entities']['wit$datetime:datetime'][0]['value']
                             user_info['datetime'] = datetime
                             status_code += 1
                             ctx["message"] = {
@@ -190,59 +194,42 @@ def bot_endpoint():
                             ctx["message"] = {
                                 "text": "Mình không biết bạn nhập mấy giờ luôn. Cho mình xin lại nhé!"}
                     elif status_code == 2:
-                        # try:
-                        # location = message['nlp']['entities']['location'][0]['value']
-                        # Fuzzywuzzy
-                        location_value = get_location(text)
-                        if location_value != None:
-                            user_info['location'] = location_value
-                            if 'pid' in user_info['location']:
-                                del user_info['location']['pid']
-                            if 'raw_address' in user_info['location']:
-                                del user_info['location']['raw_address']
+                        try:
+                            if (body["entry"][0]["messaging"][0]["sender"]["id"] != "103036932252302"):
+                                user_info['fbid'] = body["entry"][0]["messaging"][0]["sender"]["id"]
+                                location_value = text
+                                if location_value != None:
+                                    user_info['location'] = location_value
+                                    drink_str = ''
+                                    for i, drink in enumerate(user_info['drink']):
+                                        topping = user_info['topping'][i]
+                                        if topping != None:
+                                            drink_str += ' - 1 ' + drink + ' với topping ' + topping + '\n'
+                                        else:
+                                            drink_str += ' - 1 ' + drink + '\n'
 
-                            location_str = ''
-                            for key, value in user_info['location'].items():
-                                location_str += ' - ' + key + ': ' + value + '\n'
-
-                            drink_str = ''
-                            for i, drink in enumerate(user_info['drink']):
-                                topping = user_info['topping'][i]
-                                if topping != None:
-                                    drink_str += ' - 1 ' + drink + ' với topping ' + topping + '\n'
-                                else:
-                                    drink_str += ' - 1 ' + drink + '\n'
-
-                            status_code += 1
-                            ctx["message"] = {
-                                "text": 'Mình tổng kết lại nhé:\n*Đồ uống:\n'
-                                '{}*Số điện thoại: {}\n'
-                                '*Giờ lấy đồ: {}\n'
-                                '*Địa chỉ bạn nhập: {}\n'
-                                '*Địa chỉ chuẩn hóa: \n{}\n'
-                                '*Tổng thiệt hại vị chi là: {} nha.'
-                                .format(
-                                        drink_str,
-                                        user_info['phone'],
-                                        user_info['datetime'],
-                                        text,
-                                        location_str,
-                                        user_info['total_cost']
-                                )
-                            }
-                        else:
+                                    status_code += 1
+                                    ctx["message"] = {
+                                    "text": "Mình tổng kết lại nhé:\n*Đồ uống:\n{}*Số điện thoại: {}\n*Giờ lấy đồ: {}\n*Địa chỉ bạn nhập: {}\n*Tổng tiền là {} nha.".format(
+                                            drink_str, 
+                                            user_info['phone'], 
+                                            user_info['datetime'], 
+                                            user_info['location'], 
+                                            user_info['total_cost']
+                                            )
+                                    }
+                                    mycol.insert_one(user_info)
+                                    
+                        except KeyError:
                             ctx["message"] = {
                                 "text": "Địa chỉ lạ quá bạn ơi, bước cuối rồi cố nhập chuẩn nào."}
-                        # except KeyError:
-                        # 	ctx["message"] = {"text": "Địa chỉ bạn nhập lạ quá, mình không hiểu được á, nhập lại một lần giùm mình nha."}
-
                     else:
                         user_info = {}
                         user_info['drink'] = []
                         user_info['topping'] = []
                         user_info['total_cost'] = 0
                         ctx["message"] = {
-                            "text": "Phi vụ cũ của chúng ta xong rồi đó. Chúng ta làm đơn hàng mới thôi nhể."}
+                            "text": "Cảm ơn bạn đã mua hàng. Chúng ta làm đơn hàng mới thôi nhể."}
                         status_code = -1
         # postback
         elif "postback" in body["entry"][0]["messaging"][0]:
@@ -252,7 +239,6 @@ def bot_endpoint():
                 value = get_drink_value_by_payload(payload)
                 user_info['drink'].append(value["name"])
                 user_info['total_cost'] += value["price"]
-
                 ctx["message"] = {
                     "attachment": {
                         "type": "template",
@@ -298,8 +284,6 @@ def bot_endpoint():
                 user_info['total_cost'] += value["price"]
                 ctx["message"] = {
                     "text": "Lựa chọn tuyệt vời đấy. Giờ bạn có thể nói chuyện tiếp với mình, hoặc mua đồ mới hoặc lúc nào muốn tính tiền thì có thể kêu mình kiểu như \"Tính tiền cho mình với\" để mình chốt đơn nhé"}
-        # print("================================")
-        # pprint(ctx)
         response = send_to_messenger(ctx)
         return ""
 
