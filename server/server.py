@@ -9,7 +9,9 @@ import random
 from fuzzywuzzy import fuzz
 import chatbot_response as cr
 from pymongo import MongoClient
+from datetime import datetime
 
+# Setup Database
 myclient = MongoClient("mongodb://localhost:27017/")
 mydb = myclient["chatbot"]
 mycol = mydb["order"]
@@ -234,6 +236,8 @@ def bot_endpoint():
                                             user_info['total_cost']
                                             )
                                     }
+                                    user_info['createDate'] = datetime.now()
+                                    user_info['status'] = 'Nhận đơn'
                                     mycol.insert_one(user_info)
                                     
                         except KeyError:
