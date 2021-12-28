@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
+from bson import json_util, ObjectId
 import requests
 from pprint import pprint
 from bottle import debug, request, route, run
+from bottle import response as resp
 import random
 from fuzzywuzzy import fuzz
 import chatbot_response as cr
@@ -16,6 +18,20 @@ mycol = mydb["order"]
 GRAPH_URL = "https://graph.facebook.com/v7.0"
 PAGE_TOKEN = "EAAGfTgtZBnsIBAE1M0jL4pp56ZABxGFbkR7j4PtiknNiCWyjiZAz3ZBdyrrYHjvaw4BWkSZBNmTgROaQrUo788CxnDSWt49IqcSX5ZCEJ9ZBPLnUe1zTcvu6dCwXhpXG5MOg1yxZAXxCNo9EIEZCYlUw4xdRTxxWOHplZBmZAMjH4an9YLaC3SfppkMofPGllMm27o5lCK7HxGJAwZDZD"
 img_response_links = ["https://i.pinimg.com/originals/6e/24/db/6e24db7e8d4d98939d65081fc50259ca.jpg"]
+
+# the decorator
+def enable_cors(fn):
+    def _enable_cors(*args, **kwargs):
+        # set CORS headers
+        resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+        resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+        resp.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+        if request.method != 'OPTIONS':
+            # actual request; reply with the actual response
+            return fn(*args, **kwargs)
+
+    return _enable_cors
 
 # Load dishes data
 with open("data/dishes_data.json", "r", encoding="utf-8") as json_data:
@@ -287,6 +303,23 @@ def bot_endpoint():
         response = send_to_messenger(ctx)
         return ""
 
+@route("/data", method=["GET", "POST", "OPTIONS"])
+@enable_cors
+def data():
+    resp.content_type = 'application/json'
+    data = [doc for doc in mycol.find()]
+    data_sanitized = json.loads(json_util.dumps(data))
+    return json.dumps({"data": data_sanitized})
+
+@route("/auth/login", method=["GET", "POST", "OPTIONS"])
+@enable_cors
+def login():
+    data = request.json
+    if (data['username'] == "admin" and data['password'] == "123456"):
+        resp.set_cookie('token', 'JWT_holder')
+        return json.dumps({"token": "JWT_holder", "profile": {"username": "admin", "role": "admin"}})
+    else:
+        return json.dumps({"err": "Wrong password"})
 
 debug(True)
 run(reloader=True, port=8088)
