@@ -17,5 +17,6 @@ export const API_USER_DETAIL = managerAPI+"/user"
 export const API_SIGN_IN = authAPI + '/login'
 export const API_SIGN_UP = authAPI + '/register'
 export const API_SIGN_OUT = baseAPI + '/suppliers'
+export const API_TOGGLE = baseAPI + '/status'
 
 

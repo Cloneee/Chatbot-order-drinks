@@ -203,8 +203,8 @@ def bot_endpoint():
                                 "text": "Số điện thoại của bạn là: (Ví dụ: 0902210496, +84902210496,...)"}
                     elif status_code == 1:
                         try:
-                            datetime = message['nlp']['entities']['wit$datetime:datetime'][0]['value']
-                            user_info['datetime'] = datetime
+                            date = message['nlp']['entities']['wit$datetime:datetime'][0]['value']
+                            user_info['datetime'] = date
                             status_code += 1
                             ctx["message"] = {
                                 "text": "Mình đã có thông tin về thời gian bạn muốn nhận đồ. Cuối cùng cho mình xin địa chỉ nhé. (Ví dụ: 295 Bạch Mai, Hai Bà Trưng, Hà Nội,...)"}
@@ -236,7 +236,7 @@ def bot_endpoint():
                                             user_info['total_cost']
                                             )
                                     }
-                                    user_info['createDate'] = datetime.now()
+                                    user_info['createDate'] = str(datetime.now())
                                     user_info['status'] = 'Nhận đơn'
                                     mycol.insert_one(user_info)
                                     
@@ -311,9 +311,20 @@ def bot_endpoint():
 @enable_cors
 def data():
     resp.content_type = 'application/json'
-    data = [doc for doc in mycol.find()]
-    data_sanitized = json.loads(json_util.dumps(data))
-    return json.dumps({"data": data_sanitized})
+    data = [doc for doc in mycol.find()]  
+    for x in range(0,len(data)):
+        data[x]['_id'] = str(data[x]['_id'])
+    return json.dumps({"data": data})
+
+@route("/status", method=["POST", "OPTIONS"])
+@enable_cors
+def status():
+    resp.content_type = 'application/json'
+    _id = request.json['_id']
+    status = request.json['status']
+    mycol.update_one({"_id": ObjectId(_id)}, {"$set": {"status": status}})
+    return json.dumps({"msg": "OK"})
+
 
 @route("/auth/login", method=["GET", "POST", "OPTIONS"])
 @enable_cors

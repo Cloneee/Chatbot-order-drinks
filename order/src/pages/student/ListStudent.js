@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
     Table, Tag, Button, Modal, Form,
-    Input, Select,
+    Input, Select, Divider
 } from 'antd';
-import { addStudent, getstudentById, getStudents, updateStudents, } from '../../redux/action/actStudent';
+import { addStudent, getstudentById, getStudents, updateStudents, toggleStatus } from '../../redux/action/actStudent';
 import { Option } from 'antd/lib/mentions';
+import Moment from 'moment';
+
 const ListStudent = () => {
     const dispatch = useDispatch();
     const studentFromStore = useSelector((state) => state.studentById);
     const listStudentFromStore = useSelector((state) => state.students);
     const [isNeedRerender, setisNeedRerender] = useState(false)
+    Moment.locale('vi')
+
+    const clickStatus = (e) => {
+        dispatch(toggleStatus({ _id: e.currentTarget.id, status: e.currentTarget.innerHTML === "NHẬN ĐƠN" ? "Hoàn thành" : "Nhận đơn" }))
+            .then(() => {
+                Modal.success({
+                    content: 'Cập nhật thành công',
+                });
+                setisNeedRerender(true)
+                setisNeedRerender(false)
+            })
+    }
     useEffect(() => {
         dispatch(getStudents())
     }, [isNeedRerender, dispatch])
@@ -26,28 +39,30 @@ const ListStudent = () => {
             title: 'Drinks',
             dataIndex: 'drink',
             key: 'drink',
-            render: obj => {
-                return obj.map(drink => <div>- {drink}</div>)
-            }
-        },
-
-        {
-            title: 'Topping',
-            dataIndex: 'topping',
-            key: 'topping',
-            render: obj => {
-                return obj.map(drink => <div>- {drink}</div>)
+            render: (drink, record) => {
+                return drink.map((drink, index) =>
+                    <div>
+                        <div>
+                            <strong>{drink}</strong>
+                        </div>
+                        <div>
+                            {record.topping[index]}
+                        </div>
+                        <Divider />
+                    </div>)
             }
         },
         {
             title: 'Ngày tạo',
             dataIndex: 'createDate',
             key: 'createDate',
+            render: obj => <div>{Moment(obj).format('hh:mm a DD-MM-YYYY')}</div>
         },
         {
             title: 'Ngày giao',
             dataIndex: 'datetime',
             key: 'datetime',
+            render: obj => <div>{Moment(obj).format('hh:mm a DD-MM-YYYY')}</div>
         },
         {
             title: 'Địa chỉ',
@@ -63,14 +78,10 @@ const ListStudent = () => {
             title: 'Tình trạng',
             dataIndex: 'status',
             key: 'status',
-            render: tag => {
-                if (tag === 'Nhận đơn') return (<Tag color='red' key={tag}>
+            render: (tag, record) =>
+                <Tag color={tag === 'Nhận đơn' ? 'red' : 'green'} key={tag} style={{ cursor: "pointer" }} onClick={clickStatus} id={record._id}>
                     {(tag + "").toUpperCase()}
-                </Tag>)
-                else return (<Tag color='green' key={tag}>
-                    {(tag + "").toUpperCase()}
-                </Tag>)
-            }
+                </Tag>
         }
 
     ]

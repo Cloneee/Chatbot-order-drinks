@@ -1,5 +1,5 @@
 import axios from "axios";
-import {  API_SIGN_UP, API_STUDENT,  } from "../constants/api";
+import {  API_SIGN_UP, API_STUDENT, API_TOGGLE } from "../constants/api";
 import {
     createAction,
     STORE_PROFILE,
@@ -76,6 +76,18 @@ export const addStudent = (student) => {
     return (dispatch) => {
         return axios
             .post(API_SIGN_UP, student)
+            .then((resp) => {
+
+            })
+            .catch((err) => console.error(err));
+    };
+};
+
+export const toggleStatus = (orderID) => {
+    return (dispatch) => {
+        console.log(orderID)
+        return axios
+            .post(API_TOGGLE, orderID)
             .then((resp) => {
 
             })

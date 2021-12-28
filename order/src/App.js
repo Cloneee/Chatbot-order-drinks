@@ -10,7 +10,6 @@ import Header from './component/layout/Header'
 
 
 function App() {
-    const dispatch = useDispatch();
     const maproutes = routes.map((route, index) => {
         return (
             <Route key={index} path={route.path} component={route.component} exact={route.exact} />
@@ -18,15 +17,15 @@ function App() {
     });
     const authen = useSelector(state => state.authentication)
     useEffect(() => {
-       
+
     }, [])
 
     return (
         <Router>
             <ConfigProvider locale={viVN}>
                 {/* {isLoading && <Loading location="Loading...." /> } */}
-              { typeof authen.user.username !== 'undefined' &&
-  <Header/>}
+                {typeof authen.user.username !== 'undefined' &&
+                    <Header />}
                 <div className="App">
                     <Switch>{maproutes}</Switch>
                 </div>
