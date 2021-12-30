@@ -18,7 +18,7 @@ mycol = mydb["order"]
 
 # Setup facebook API
 GRAPH_URL = "https://graph.facebook.com/v7.0"
-PAGE_TOKEN = "EAAGfTgtZBnsIBAE1M0jL4pp56ZABxGFbkR7j4PtiknNiCWyjiZAz3ZBdyrrYHjvaw4BWkSZBNmTgROaQrUo788CxnDSWt49IqcSX5ZCEJ9ZBPLnUe1zTcvu6dCwXhpXG5MOg1yxZAXxCNo9EIEZCYlUw4xdRTxxWOHplZBmZAMjH4an9YLaC3SfppkMofPGllMm27o5lCK7HxGJAwZDZD"
+PAGE_TOKEN = "Put your Facebook Token here"
 img_response_links = ["https://i.pinimg.com/originals/6e/24/db/6e24db7e8d4d98939d65081fc50259ca.jpg"]
 
 # the decorator
